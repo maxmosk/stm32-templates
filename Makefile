@@ -12,13 +12,17 @@ DRIVER_DIR = STM32CubeF1
 OPENOCD_SCRIPT_DIR ?= /usr/share/openocd/scripts
 HEAP_SIZE = 0x400
 
+# Add *_USER variables
+include $(PROJECT_DIR)/firmware.mk
+
 ################
 # Sources
 
 SOURCES_S = $(CMSIS_PREFIX)gcc/startup_stm32f103xb.s
+SOURCES_S += $(SOURCES_S_USER)
 
 SOURCES_C = $(CMSIS_PREFIX)system_stm32f1xx.c
-SOURCES_C += $(PROJECT_DIR)main.c
+SOURCES_C += $(SOURCES_C_USER)
 
 SOURCES = $(SOURCES_S) $(SOURCES_C)
 OBJS = $(SOURCES_S:.s=.o) $(SOURCES_C:.c=.o)
@@ -40,22 +44,18 @@ GDB = gdb-multiarch
 RM = rm -f
 OPENOCD = openocd
 
-# Compiler options
+# Build options
 
-INCLUDES += -I$(CMSIS_DIR)/Include -I$(PERITH_DIR)/Inc -I$(DRIVER_DIR)/Drivers/CMSIS/Include
+INCLUDES = -I$(CMSIS_DIR)/Include -I$(PERITH_DIR)/Inc -I$(DRIVER_DIR)/Drivers/CMSIS/Include
 DEFINES = -DSTM32 -DSTM32F1 -DSTM32F103xB -DHEAP_SIZE=$(HEAP_SIZE) -DUSE_FULL_LL_DRIVER=1
 MCUFLAGS = -mcpu=cortex-m3 -mlittle-endian -mfloat-abi=soft -mthumb -mno-unaligned-access
-
 DEBUG_OPTIMIZE_FLAGS = -O0 -ggdb -gdwarf-2
-
 CFLAGS = -Wall -Wextra --pedantic
-CFLAGS_EXTRA = -nostartfiles -nodefaultlibs -nostdlib \
-               -fdata-sections -ffunction-sections
+CFLAGS_EXTRA = -nostartfiles -nodefaultlibs -nostdlib -fdata-sections -ffunction-sections
+CFLAGS += $(DEFINES) $(MCUFLAGS) $(DEBUG_OPTIMIZE_FLAGS) $(CFLAGS_EXTRA) $(INCLUDES) $(CFLAGS_USER)
 
-CFLAGS += $(DEFINES) $(MCUFLAGS) $(DEBUG_OPTIMIZE_FLAGS) $(CFLAGS_EXTRA) $(INCLUDES)
-
-LDFLAGS = -static $(MCUFLAGS) -Wl,--start-group -lgcc -lc -lg -Wl,--end-group \
-          -Wl,--gc-sections -T $(CMSIS_PREFIX)gcc/linker/STM32F103XB_FLASH.ld
+LDFLAGS = -static $(MCUFLAGS) -Wl,--start-group -lgcc -lc -lg -Wl,--end-group  -Wl,--gc-sections \
+          -T $(CMSIS_PREFIX)gcc/linker/STM32F103XB_FLASH.ld $(LDFLAGS_USER)
 
 .PHONY: dirs all clean flash erase
 

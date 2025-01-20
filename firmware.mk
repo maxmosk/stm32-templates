@@ -1,0 +1,1 @@
+SOURCES_C_USER = $(PROJECT_DIR)main.c
