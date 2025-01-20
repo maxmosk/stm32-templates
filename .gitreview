@@ -1,0 +1,4 @@
+[gerrit]
+host=review.gerrithub.io
+project=maxmosk/stm32-templates
+defaultbranch=main
