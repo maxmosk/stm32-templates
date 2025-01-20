@@ -55,3 +55,4 @@ dkms.conf
 STM32CubeF1
 cmsis-device-f1
 stm32f1xx-hal-driver
+nanoprintf
