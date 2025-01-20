@@ -7,10 +7,11 @@ PROJECT = $(OUTPATH)/firmware
 CMSIS_DIR = cmsis-device-f1
 CMSIS_PREFIX = $(CMSIS_DIR)/Source/Templates/
 PERIPH_DIR = stm32f1xx-hal-driver
-PERIPH_PREFIX = $(PERITH_DIR)
+PERIPH_PREFIX = $(PERIPH_DIR)/Src/
 DRIVER_DIR = STM32CubeF1
 OPENOCD_SCRIPT_DIR ?= /usr/share/openocd/scripts
 HEAP_SIZE = 0x400
+ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 # Add *_USER variables
 include $(PROJECT_DIR)/firmware.mk
@@ -61,7 +62,7 @@ LDFLAGS = -static $(MCUFLAGS) -Wl,--start-group -lgcc -lc -lg -Wl,--end-group  -
 
 all: dirs $(PROJECT).bin $(PROJECT).s
 
-dirs: | $(OUTPATH) $(CMSIS_DIR) $(PERIPH_DIR) $(DRIVER_DIR)
+dirs: | $(OUTPATH) $(CMSIS_DIR) $(PERIPH_DIR) $(DRIVER_DIR) $(USER_DIRS)
 
 $(CMSIS_DIR):
 	git clone https://github.com/STMicroelectronics/cmsis-device-f1.git $@
