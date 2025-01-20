@@ -46,7 +46,7 @@ OPENOCD = openocd
 
 # Build options
 
-INCLUDES = -I$(CMSIS_DIR)/Include -I$(PERITH_DIR)/Inc -I$(DRIVER_DIR)/Drivers/CMSIS/Include
+INCLUDES = -I$(CMSIS_DIR)/Include -I$(PERIPH_DIR)/Inc -I$(DRIVER_DIR)/Drivers/CMSIS/Include
 DEFINES = -DSTM32 -DSTM32F1 -DSTM32F103xB -DHEAP_SIZE=$(HEAP_SIZE) -DUSE_FULL_LL_DRIVER=1
 MCUFLAGS = -mcpu=cortex-m3 -mlittle-endian -mfloat-abi=soft -mthumb -mno-unaligned-access
 DEBUG_OPTIMIZE_FLAGS = -O0 -ggdb -gdwarf-2
