@@ -1,1 +1,2 @@
 SOURCES_C_USER = $(PROJECT_DIR)main.c
+USER_MCU = stm32g030f6p6
