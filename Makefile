@@ -18,6 +18,7 @@ MCU_OPENOCD = f1x
 MCU_CMSIS = F1xx
 MCU_DEFINE = F103xB
 MCU_LINKER = F103XB
+MCU_CPU = cortex-m3
 else ifeq ($(USER_MCU),stm32g030f6p6)
 MCU_SERIES = g0xx
 MCU_DRIVER = G0
@@ -26,6 +27,7 @@ MCU_OPENOCD = g0x
 MCU_CMSIS = G0xx
 MCU_DEFINE = G030xx
 MCU_LINKER = G030XX
+MCU_CPU = cortex-m0
 MCU_LDS = link/STM32G030XX_FLASH.ld
 endif
 
@@ -68,7 +70,7 @@ OPENOCD = openocd
 
 INCLUDES = -I$(DRIVER_DIR)/Drivers/CMSIS/Include -I$(DRIVER_DIR)/Drivers/STM32$(MCU_CMSIS)_HAL_Driver/Inc -I$(DRIVER_DIR)/Drivers/CMSIS/Device/ST/STM32$(MCU_CMSIS)/Include
 DEFINES = -DSTM32 -DSTM32$(MCU_DRIVER) -DSTM32$(MCU_DEFINE) -DUSE_FULL_LL_DRIVER=1
-MCUFLAGS = -mcpu=cortex-m3 -mlittle-endian -mfloat-abi=soft -mthumb -mno-unaligned-access
+MCUFLAGS = -mcpu=$(MCU_CPU) -mlittle-endian -mfloat-abi=soft -mthumb -mno-unaligned-access
 DEBUG_OPTIMIZE_FLAGS = -O0 -ggdb -gdwarf-2
 CFLAGS = -Wall -Wextra --pedantic
 CFLAGS_EXTRA = -nostartfiles -nodefaultlibs -nostdlib -fdata-sections -ffunction-sections
